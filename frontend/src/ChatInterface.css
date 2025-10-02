@@ -128,3 +128,11 @@
   color: #4b5563;
   font-size: 0.875rem;
 }
+
+/* Custom line-clamp utility for description truncation */
+.line-clamp-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

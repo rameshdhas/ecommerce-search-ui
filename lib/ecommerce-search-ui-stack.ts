@@ -27,7 +27,7 @@ export class EcommerceSearchUiStack extends cdk.Stack {
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'Distribution', {
       defaultBehavior: {
-        origin: new origins.S3Origin(websiteBucket, {
+        origin: origins.S3BucketOrigin.withOriginAccessIdentity(websiteBucket, {
           originAccessIdentity: originAccessIdentity,
         }),
         compress: true,

@@ -6,7 +6,6 @@ import './ChatInterface.css';
 const ProductListing = ({ products, onLoadMore, hasMore, isLoadingMore, onProductClick }) => {
   return (
     <div className="w-full">
-      <p className="mb-4 text-gray-600">Here are the products based on your search:</p>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {products.map(product => (
           <div key={product.id} className="rounded-lg p-4 bg-white hover:shadow-md transition-shadow cursor-pointer" onClick={() => onProductClick(product, products)}>
@@ -188,7 +187,7 @@ const ChatInterface = () => {
       } else if (searchTerm.includes('help')) {
         responseContent = "I can help you search for products, compare prices, check reviews, and find the best deals. Here are some popular products:";
       } else {
-        responseContent = `Here are some product recommendations for "${query}":`;
+        responseContent = `Here are the products based on your search "${query}"`;
       }
 
       // Create product listing with API data
