@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ChatInterface.css';
 
 
@@ -105,7 +105,7 @@ const ChatInterface = () => {
       console.log('Making API call for query:', query);
 
       // Call the search API
-      const response = await fetch('https://9ahb9n78o3.execute-api.us-east-1.amazonaws.com/prod/search', {
+      const response = await fetch('https://9ahb9n78o3.execute-api.us-east-1.amazonaws.com/prod/node-search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -595,9 +595,21 @@ const ChatInterface = () => {
 const ProductListingMessage = ({ messageId, initialProducts, allProducts, onProductClick }) => {
   const [displayedProducts, setDisplayedProducts] = useState(initialProducts);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const productListRef = useRef(null);
   const ITEMS_PER_PAGE = 5;
 
   const hasMore = displayedProducts.length < allProducts.length;
+
+  useEffect(() => {
+    if (productListRef.current && displayedProducts.length > 0) {
+      setTimeout(() => {
+        productListRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 100);
+    }
+  }, [displayedProducts.length]);
 
   const handleLoadMore = () => {
     setIsLoadingMore(true);
@@ -612,13 +624,15 @@ const ProductListingMessage = ({ messageId, initialProducts, allProducts, onProd
   };
 
   return (
-    <ProductListing
-      products={displayedProducts}
-      onLoadMore={handleLoadMore}
-      hasMore={hasMore}
-      isLoadingMore={isLoadingMore}
-      onProductClick={(product) => onProductClick(product, allProducts)}
-    />
+    <div ref={productListRef}>
+      <ProductListing
+        products={displayedProducts}
+        onLoadMore={handleLoadMore}
+        hasMore={hasMore}
+        isLoadingMore={isLoadingMore}
+        onProductClick={(product) => onProductClick(product, allProducts)}
+      />
+    </div>
   );
 };
 
