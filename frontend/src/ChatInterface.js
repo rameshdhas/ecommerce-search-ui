@@ -28,7 +28,7 @@ const ProductListing = ({ products, onLoadMore, hasMore, isLoadingMore, onProduc
                     {'★'.repeat(Math.floor(product.rating))}
                   </span>
                   <span className="text-xs text-gray-500">
-                    {product.rating} ({product.reviews.toLocaleString()})
+                    {product.rating.toFixed(2)} ({product.reviews.toLocaleString()})
                   </span>
                 </div>
                 <div className="flex items-center gap-3 mt-2">
@@ -84,6 +84,8 @@ const ChatInterface = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProductIndex, setSelectedProductIndex] = useState(0);
   const [allProducts, setAllProducts] = useState([]);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const descriptionRef = useRef(null);
 
 
   const handleSendMessage = async (e) => {
@@ -256,10 +258,12 @@ const ChatInterface = () => {
     setSelectedProduct(product);
     setSelectedProductIndex(productIndex);
     setAllProducts(products);
+    setIsDescriptionExpanded(false); // Reset description expansion when new product is selected
   };
 
   const handleCloseOverlay = () => {
     setSelectedProduct(null);
+    setIsDescriptionExpanded(false);
   };
 
   const handlePrevProduct = () => {
@@ -267,6 +271,7 @@ const ChatInterface = () => {
       const newIndex = selectedProductIndex - 1;
       setSelectedProductIndex(newIndex);
       setSelectedProduct(allProducts[newIndex]);
+      setIsDescriptionExpanded(false);
     }
   };
 
@@ -275,6 +280,23 @@ const ChatInterface = () => {
       const newIndex = selectedProductIndex + 1;
       setSelectedProductIndex(newIndex);
       setSelectedProduct(allProducts[newIndex]);
+      setIsDescriptionExpanded(false);
+    }
+  };
+
+  const handleDescriptionToggle = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+
+    // If expanding, scroll to description after a brief delay for DOM update
+    if (!isDescriptionExpanded) {
+      setTimeout(() => {
+        if (descriptionRef.current) {
+          descriptionRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 100);
     }
   };
 
@@ -482,7 +504,7 @@ const ChatInterface = () => {
       {/* Product Detail Overlay */}
       {selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={handleCloseOverlay}>
-          <div className="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             {/* Header with close button */}
             <div className="flex justify-between items-center p-6 border-b">
               <h2 className="text-xl font-semibold text-gray-900">Product Details</h2>
@@ -521,7 +543,7 @@ const ChatInterface = () => {
                       {'☆'.repeat(5 - Math.floor(selectedProduct.rating))}
                     </div>
                     <span className="text-gray-600">
-                      {selectedProduct.rating} ({selectedProduct.reviews.toLocaleString()} reviews)
+                      {selectedProduct.rating.toFixed(2)} ({selectedProduct.reviews.toLocaleString()} reviews)
                     </span>
                   </div>
 
@@ -552,6 +574,31 @@ const ChatInterface = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Description - Full width below the two-column layout */}
+              {selectedProduct.description && (
+                <div ref={descriptionRef} className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-3">Description</h4>
+                  <div className="text-gray-700 leading-relaxed">
+                    <p className={`${!isDescriptionExpanded ? 'line-clamp-5' : ''}`}>
+                      {selectedProduct.description}
+                    </p>
+                    {(() => {
+                      // Check if text would be clamped by creating a temporary element
+                      const words = selectedProduct.description.split(' ');
+                      const shouldShowButton = words.length > 50; // Rough estimate for 5 lines
+                      return shouldShowButton && (
+                        <button
+                          onClick={handleDescriptionToggle}
+                          className="text-blue-600 hover:text-blue-800 font-medium mt-2 text-sm"
+                        >
+                          {isDescriptionExpanded ? 'Show less' : 'Show more'}
+                        </button>
+                      );
+                    })()}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Navigation arrows */}
