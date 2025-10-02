@@ -85,6 +85,7 @@ const ChatInterface = () => {
   const [selectedProductIndex, setSelectedProductIndex] = useState(0);
   const [allProducts, setAllProducts] = useState([]);
 
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputValue.trim() || isLoading) return;
@@ -104,7 +105,7 @@ const ChatInterface = () => {
       console.log('Making API call for query:', query);
 
       // Call the search API
-      const response = await fetch('https://jo1enpl5x4.execute-api.us-east-1.amazonaws.com/prod/search', {
+      const response = await fetch('https://9ahb9n78o3.execute-api.us-east-1.amazonaws.com/prod/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
