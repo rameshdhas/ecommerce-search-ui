@@ -112,7 +112,7 @@ const ChatInterface = () => {
         },
         body: JSON.stringify({
           query: query,
-          limit: 15,
+          limit: 12,
           offset: 0
         })
       });
@@ -354,28 +354,28 @@ const ChatInterface = () => {
                 {/* Suggestions below search box */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
                   <button
-                    onClick={() => handleSuggestionClick("Show me the best headphones")}
+                    onClick={() => handleSuggestionClick("Comfortable running shoes for marathon")}
                     className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
                   >
-                    <p className="text-sm text-gray-700">🎧 Show me the best headphones</p>
+                    <p className="text-sm text-gray-700">Comfortable running shoes for marathon</p>
                   </button>
                   <button
-                    onClick={() => handleSuggestionClick("Find wireless earbuds under $100")}
+                    onClick={() => handleSuggestionClick("Winter jacket for cold weather protection")}
                     className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
                   >
-                    <p className="text-sm text-gray-700">💰 Find wireless earbuds under $100</p>
+                    <p className="text-sm text-gray-700">Winter jacket for cold weather protection</p>
                   </button>
                   <button
-                    onClick={() => handleSuggestionClick("Search for AirPods Pro")}
+                    onClick={() => handleSuggestionClick("Items for outdoor camping trip")}
                     className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
                   >
-                    <p className="text-sm text-gray-700">🔍 Search for AirPods Pro</p>
+                    <p className="text-sm text-gray-700">Items for outdoor camping trip</p>
                   </button>
                   <button
-                    onClick={() => handleSuggestionClick("Show me today's deals")}
+                    onClick={() => handleSuggestionClick("Smartphone with excellent camera quality")}
                     className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
                   >
-                    <p className="text-sm text-gray-700">🏷️ Show me today's deals</p>
+                    <p className="text-sm text-gray-700">Smartphone with excellent camera quality</p>
                   </button>
                 </div>
               </div>
